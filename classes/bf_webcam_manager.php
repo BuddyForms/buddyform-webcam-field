@@ -18,7 +18,7 @@ class bf_webcam_manager {
     private static $plugin_slug = 'bf_webcam';
 
     public function __construct() {
-        require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_webcam_log.php';
+        require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_log.php';
         new bf_webcam_log();
         try {
             $this->bf_webcam_fe_includes();
@@ -34,10 +34,10 @@ class bf_webcam_manager {
     }
 
     public function bf_webcam_fe_includes() {
-        require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_webcam_form_builder.php';
+        require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_form_builder.php';
         new bf_webcam_form_builder();
-        require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_webcam_form_elements.php';
-        new bf_woo_elem_form_element();
+        require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_form_elements.php';
+        new bf_webcam_form_elements();
         //require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_form_elements_save.php';
         //new bf_woo_elem_form_elements_save();
 

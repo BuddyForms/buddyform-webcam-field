@@ -38,8 +38,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 if ( ! class_exists( 'bf_webcam' ) ) {
 
-    require_once dirname( __FILE__ ) . '/includes/bf_woo_elem_fs.php';
-    new bf_woo_elem_fs();
+    //require_once dirname( __FILE__ ) . '/includes/bf_woo_elem_fs.php';
+    //new bf_woo_elem_fs();
 
     class bf_webcam {
 
@@ -55,26 +55,26 @@ if ( ! class_exists( 'bf_webcam' ) ) {
             $this->load_plugin_textdomain();
            // require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_requirements.php';
             //new bf_woo_elem_requirements();
-            require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_webcam_manager.php';
+            require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_manager.php';
             new bf_webcam_manager();
-            if ( bf_woo_elem_requirements::is_buddy_form_active() && bf_woo_elem_requirements::is_woocommerce_active() ) {
+           // if ( bf_woo_elem_requirements::is_buddy_form_active() && bf_woo_elem_requirements::is_woocommerce_active() ) {
 
 
 
-//				register_activation_hook( __FILE__, array( $this, 'activation' ) );
-//				register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
-//				self::getFreemius()->add_action('after_uninstall', array($this, 'uninstall_cleanup') );
-            }
+        //	register_activation_hook( __FILE__, array( $this, 'activation' ) );
+        //	register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+        //	self::getFreemius()->add_action('after_uninstall', array($this, 'uninstall_cleanup') );
+          //  }
         }
 
         private function constants() {
-            define( 'BF_WOO_ELEM_BASE_NAME', plugin_basename( __FILE__ ) );
-            define( 'BF_WOO_ELEM_BASE_NAMEBASE_FILE', trailingslashit( wp_normalize_path( plugin_dir_path( __FILE__ ) ) ) . 'loader.php' );
-            define( 'BF_WOO_ELEM_CSS_PATH', plugin_dir_url( __FILE__ ) . 'assets/css/' );
-            define( 'BF_WOO_ELEM_JS_PATH', plugin_dir_url( __FILE__ ) . 'assets/js/' );
-            define( 'BF_WOO_ELEM_VIEW_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR );
-            define( 'BF_WOO_ELEM_TEMPLATES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR );
-            define( 'BF_WOO_ELEM_INCLUDES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR );
+            define( 'BF_WEBCAM_ELEM_BASE_NAME', plugin_basename( __FILE__ ) );
+            define( 'BF_WEBCAM_ELEM_BASE_NAMEBASE_FILE', trailingslashit( wp_normalize_path( plugin_dir_path( __FILE__ ) ) ) . 'loader.php' );
+            define( 'BF_WEBCAM_ELEM_CSS_PATH', plugin_dir_url( __FILE__ ) . 'assets/css/' );
+            define( 'BF_WEBCAM_ELEM_JS_PATH', plugin_dir_url( __FILE__ ) . 'assets/js/' );
+            define( 'BF_WEBCAM_ELEM_VIEW_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR );
+            define( 'BF_WEBCAM_ELEM_TEMPLATES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR );
+            define( 'BF_WEBCAM_ELEM_INCLUDES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR );
         }
 
         /**
@@ -97,5 +97,5 @@ if ( ! class_exists( 'bf_webcam' ) ) {
 
     }
 
-    add_action( 'plugins_loaded', array( 'bf_woo_elem', 'get_instance' ), 1 );
+    add_action( 'plugins_loaded', array( 'bf_webcam', 'get_instance' ), 1 );
 }

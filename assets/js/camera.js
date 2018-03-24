@@ -25,28 +25,31 @@ jQuery(document).ready(function ($) {
     });
 
 	$('.gfirem_webcam').each(function () {
-		var field_container = $(this).find("[data-action=store-snapshot]"),
-			identifier = field_container.attr('id');
-		id = identifier.replace('field_', '');
+
+        var current = $(this),
+            id = current.attr('id'),
+            height = current.attr('height');
+
+
 		//var autoscaling = Math.ceil( (gfirem_webcam.config[identifier].width/2) *1.5);
 		Webcam.set({
-			width: gfirem_webcam.config[identifier].width,
-			height: gfirem_webcam.config[identifier].height,
+			width: 400,
+			height: height,
 			image_format: 'jpeg',
-			jpeg_quality: gfirem_webcam.config[identifier].jpeg_quality,
-			fps	: gfirem_webcam.config[identifier].fps,
+			//jpeg_quality: gfirem_webcam.config[identifier].jpeg_quality,
+			//fps	: gfirem_webcam.config[identifier].fps,
             flip_horiz: true
 		});
 		Webcam.attach('#my_camera_' + id);
-		if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
+		/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
 			$('#my_camera_' + id).hide();
-		}
+		}*/
 		$('#webcam_button_' + id).click(function (e) {
 
-			if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
+			/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
 				$('#snap_container_'+id).hide();
 				$('#my_camera_' + id).show();
-			}
+			}*/
 
 
 			Webcam.snap(function (data_uri) {
