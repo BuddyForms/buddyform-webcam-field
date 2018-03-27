@@ -28,16 +28,20 @@ jQuery(document).ready(function ($) {
 
         var current = $(this),
             id = current.attr('id'),
-            height = current.attr('height');
+            height = current.attr('height'),
+			width = current.attr('width'),
+			fps = current.attr('fps'),
+			quality = current.attr('quality');
+
 
 
 		//var autoscaling = Math.ceil( (gfirem_webcam.config[identifier].width/2) *1.5);
 		Webcam.set({
-			width: 400,
+			width: width,
 			height: height,
 			image_format: 'jpeg',
-			//jpeg_quality: gfirem_webcam.config[identifier].jpeg_quality,
-			//fps	: gfirem_webcam.config[identifier].fps,
+			jpeg_quality: quality,
+			fps	: fps,
             flip_horiz: true
 		});
 		Webcam.attach('#my_camera_' + id);
@@ -60,9 +64,10 @@ jQuery(document).ready(function ($) {
             Webcam.freeze();
 
 			// swap button sets
-
+			var tt = $("#pre_take_buttons");
 			document.getElementById('pre_take_buttons').style.display = 'none';
 			document.getElementById('post_take_buttons').style.display = '';
+            $("#webcam_take_another_"+id).val('Take Another');
 		});
 		$('#webcam_take_another_' + id).click(function (e) {
 

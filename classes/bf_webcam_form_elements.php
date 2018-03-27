@@ -102,17 +102,20 @@ class bf_webcam_form_elements {
 
             $id = $form_args['field_id'];
             $height =  $customfield['height'];
+            $width = $customfield['width'];
+            $fps = $customfield['fps'];
+            $quality =$customfield['quality'];
             $this->add_scripts();
-            $this->add_styles();
+           // $this->add_styles();
             ob_start();
-            $box = "<div  class=\"gfirem_webcam\" field_id=\"$id\" id=\"$id\" height ='$height'>
+            $box = "<div  class=\"gfirem_webcam\" field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality'>
 	                   <input data-action=\"store-snapshot\" type=\"hidden\" id='field_$id' name=\"\" value=\"\" class=\"file-upload-input\"/>
 	
 	                  <div id='my_camera_$id'>	</div>
-                        <div id=\"pre_take_buttons\" style=\"margin-top: 10px;\">
+                        <div id=\"pre_take_buttons\" style=\"margin-top: 10px; margin-bottom: 10px;\">
                             <input  id='webcam_button_$id' name=\"\" type=\"button\" class=\"select-image-btn btn btn-default\" value=\"Take Snapshot\"/>
                         </div>
-                        <div id='post_take_buttons' style=\"display:none; margin-top: 10px;\">
+                        <div id='post_take_buttons' style=\"display:none; margin-top: 10px; margin-bottom: 10px;\">
                             <input  id='webcam_take_another_$id' name=\"\" type=\"button\" class=\"select-image-btn btn btn-default\" value=\"Take Another\"/>
                     
                         </div>

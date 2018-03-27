@@ -17,14 +17,14 @@ class bf_webcam_form_builder {
         add_filter( 'buddyforms_add_form_element_select_option', array( $this, 'buddyforms_webcam_formbuilder_elements_select' ), 1 );
         add_filter( 'buddyforms_form_element_add_field', array( $this, 'buddyforms_webcam_create_new_form_builder_form_element' ), 1, 5 );
 
-        add_action( 'admin_footer', array( $this, 'load_js_for_builder' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'load_js_for_builder' ),10 );
     }
 
-    public function load_js_for_builder( $hook ) {
-        if ( $this->load_script ) {
-            wp_enqueue_script( 'bf_woo_builder', BF_WOO_ELEM_JS_PATH . 'bf_woo_builder.js', array( "jquery" ), null, true );
-            wp_enqueue_style( 'bf_woo_builder', BF_WOO_ELEM_CSS_PATH . 'buddyforms-woocommerce.css' );
-        }
+    public function load_js_for_builder() {
+
+       // wp_enqueue_script( 'buddyforms_webcam', BF_WEBCAM_ELEM_JS_PATH.'webcam.js', array( 'jquery' ) );
+        wp_enqueue_script( 'buddyforms_camera_admin', BF_WEBCAM_ELEM_JS_PATH.'camera_admin.js', array( 'jquery' ) );
+
     }
 
     public function buddyforms_webcam_formbuilder_elements_select( $elements_select_options ) {
@@ -70,8 +70,25 @@ class bf_webcam_form_builder {
 
                 $form_fields['hidden']['type'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][type]", $field_type );
                 $height                          = isset( $buddyform['form_fields'][ $field_id ]['height'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['height'] ) : '240';
-                $form_fields['general']['webcam_height'] = new Element_Number( '<b>' . __( 'Height of the live camera viewer in pixels, by default \'240\'. ', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][height]", array( 'value' =>  $height , 'id'    => 'webcam_height' . $field_id
+                $width                           = isset( $buddyform['form_fields'][ $field_id ]['width'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['width'] ) : '320';
+                $fps                             = isset( $buddyform['form_fields'][ $field_id ]['fps'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['fps'] ) : '30';
+                $quality                             = isset( $buddyform['form_fields'][ $field_id ]['quality'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['quality'] ) : '90';
+                $height_element = new Element_Number( '<b>' . __( 'Height of the live camera viewer in pixels, by default \'240\'. ', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][height]", array(  'class'=>'gfirem_webcam_admin', 'value' =>  $height , 'id'    => 'height_' . $field_id  ) );
+
+                $height_element->setAttribute('onchange',"changeHeigthRatio('".$field_id."')");
+                $form_fields['general']['webcam_height'] = $height_element;
+
+                $width_element = new Element_Number( '<b>' . __( 'Width of the live camera viewer in pixels, by default \'320\'. ', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][width]", array( 'field_id'=>$field_id ,'class'=>'gfirem_webcam_admin', 'value' =>  $width , 'id'    => 'width_' . $field_id
                 ) );
+                $width_element->setAttribute('onchange',"changeWidthRatio('".$field_id."')");
+                $form_fields['general']['webcam_width'] = $width_element;
+                $form_fields['general']['webcam_fps'] =  new Element_Number( '<b>' . __( "Set the desired fps (frames per second) capture rate, by default '30'. ", 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][fps]", array( 'class'=>'gfirem_webcam_admin', 'value' =>  $fps , 'id'    => 'fps_' . $field_id
+                ) );
+                $form_fields['general']['webcam_quality'] =  new Element_Number( '<b>' . __( "This is the desired quality, from 0 (worst) to 100 (best), by default '90'. ", 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][quality]", array( 'class'=>'gfirem_webcam_admin', 'value' =>  $quality , 'id'    => 'quality_' . $field_id
+                ) );
+
+
+
         }
 
         return $form_fields;
