@@ -18,8 +18,28 @@ class bf_webcam_form_builder {
         add_filter( 'buddyforms_form_element_add_field', array( $this, 'buddyforms_webcam_create_new_form_builder_form_element' ), 1, 5 );
 
         add_action( 'admin_enqueue_scripts', array( $this, 'load_js_for_builder' ),10 );
+        add_action("custom_column_default",array($this,"webcam_custom_column_default"),1,2);
     }
 
+    public function webcam_custom_column_default($item, $column_name ){
+
+        global $buddyforms;
+        $column_val = get_post_meta( $item['ID'], $column_name, true );
+        $result = $column_val;
+        $formSlug= $_GET['form_slug'];
+        $buddyFData = isset($buddyforms[$formSlug]['form_fields']) ?$buddyforms[$formSlug]['form_fields']:[] ;
+        foreach ($buddyFData as $key=>$value){
+            $field = $value['slug'];
+            $type  = $value['type'];
+            if( $field == $column_name && $type == 'webcam'){
+
+                $url = wp_get_attachment_url( $column_val );
+                $result = " <a style='vertical-align: top;' target='_blank' href='" .  $url . "'>$column_val</a>";
+
+            }
+        }
+			echo  $result;
+    }
     public function load_js_for_builder() {
 
        // wp_enqueue_script( 'buddyforms_webcam', BF_WEBCAM_ELEM_JS_PATH.'webcam.js', array( 'jquery' ) );

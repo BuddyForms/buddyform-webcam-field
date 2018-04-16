@@ -98,7 +98,7 @@ class bf_webcam_form_elements {
         if ( ! isset( $customfield['type'] ) ) {
             return $form;
         }
-        if (  is_user_logged_in() ) {
+        if (  is_user_logged_in() && $customfield['type']=='webcam' ) {
 
             $id = $form_args['field_id'];
             $height =  $customfield['height'];
@@ -106,17 +106,18 @@ class bf_webcam_form_elements {
             $fps = $customfield['fps'];
             $quality =$customfield['quality'];
             $this->add_scripts();
+            $url = admin_url('admin-ajax.php');
            // $this->add_styles();
             ob_start();
-            $box = "<div  class=\"gfirem_webcam\" field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality'>
-	                   <input data-action=\"store-snapshot\" type=\"hidden\" id='field_$id' name=\"\" value=\"\" class=\"file-upload-input\"/>
+            $box = "<div  class=\"buddyform_webcam\" field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url'>
+	                   <input data-action=\"store-snapshot\" type=\"hidden\" id='field_$id' name=\"$id\" value=\"\" class=\"file-upload-input\"/>
 	
 	                  <div id='my_camera_$id'>	</div>
                         <div id=\"pre_take_buttons\" style=\"margin-top: 10px; margin-bottom: 10px;\">
-                            <input  id='webcam_button_$id' name=\"\" type=\"button\" class=\"select-image-btn btn btn-default\" value=\"Take Snapshot\"/>
+                            <input  id='buddyform_webcam_button_$id' name=\"\" type=\"button\" class=\"select-imagef-btn btn btn-default\" value=\"Take Snapshot\"/>
                         </div>
                         <div id='post_take_buttons' style=\"display:none; margin-top: 10px; margin-bottom: 10px;\">
-                            <input  id='webcam_take_another_$id' name=\"\" type=\"button\" class=\"select-image-btn btn btn-default\" value=\"Take Another\"/>
+                            <input  id='buddyform_webcam_take_another_$id' name=\"\" type=\"button\" class=\"select-image-btn btn btn-default\" value=\"Take Another\"/>
                     
                         </div>
                     </div>

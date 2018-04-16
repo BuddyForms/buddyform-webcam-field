@@ -11,20 +11,36 @@ jQuery(document).ready(function ($) {
 
 
     $( "form" ).submit(function( event ) {
-        $('.gfirem_webcam').each(function () {
+        $('.buddyform_webcam').each(function () {
 
-            var field_container = $(this).find("[data-action=store-snapshot]"),
-                identifier = field_container.attr('id');
-            id = identifier.replace('field_', '');
-            var submit_photo =  gfirem_webcam.config[identifier].submmit_photo == "true" ? true : false;
-            if(submit_photo){
-                $('#webcam_button_' + id).click();
-			}
+            var current = $(this),
+				url = current.attr('url'),
+                id = current.attr('id'),
+                height = current.attr('height'),
+                width = current.attr('width'),
+                fps = current.attr('fps'),
+                quality = current.attr('quality');
+
+                $('#buddyform_webcam_button_' + id).click();
+                var field_value = $('#field_' + id).val();
+
+               /* jQuery.ajax({
+                    type: 'POST', url: url,
+                    data: {action: 'save_webcam_snapshot', field_id: id, field_value: field_value, nonce: frm_js.nonce},
+                    success: function (newRow) {
+                    	var tt=0;
+                    	var tttt=0;
+                    	var ttt=000000;
+
+					}
+				})*/
+
 
 		})
+		return false;
     });
 
-	$('.gfirem_webcam').each(function () {
+	$('.buddyform_webcam').each(function () {
 
         var current = $(this),
             id = current.attr('id'),
@@ -48,7 +64,7 @@ jQuery(document).ready(function ($) {
 		/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
 			$('#my_camera_' + id).hide();
 		}*/
-		$('#webcam_button_' + id).click(function (e) {
+		$('#buddyform_webcam_button_' + id).click(function (e) {
 
 			/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
 				$('#snap_container_'+id).hide();
@@ -57,6 +73,7 @@ jQuery(document).ready(function ($) {
 
 
 			Webcam.snap(function (data_uri) {
+
 				// display results in page
 				$('#field_' + id).val(data_uri);
 			});
@@ -69,7 +86,7 @@ jQuery(document).ready(function ($) {
 			document.getElementById('post_take_buttons').style.display = '';
             $("#webcam_take_another_"+id).val('Take Another');
 		});
-		$('#webcam_take_another_' + id).click(function (e) {
+		$('#buddyform_webcam_take_another_' + id).click(function (e) {
 
 			// cancel preview freeze and return to live camera feed
 			Webcam.unfreeze();

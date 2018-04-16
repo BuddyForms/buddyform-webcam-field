@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class bf_webcam_manager {
 
     protected static $version = '1.4.2';
-    private static $plugin_slug = 'bf_webcam';
+    private static $plugin_slug = 'webcam';
 
     public function __construct() {
         require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_log.php';
@@ -35,6 +35,8 @@ class bf_webcam_manager {
 
     public function bf_webcam_fe_includes() {
         require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_form_builder.php';
+        require_once BF_WEBCAM_ELEM_INCLUDES_PATH .'bf_webcam_admin.php';
+        new BuddyFormWebcamAdmin();
         new bf_webcam_form_builder();
         require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_webcam_form_elements.php';
         new bf_webcam_form_elements();
