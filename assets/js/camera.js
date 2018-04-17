@@ -47,6 +47,7 @@ jQuery(document).ready(function ($) {
             height = current.attr('height'),
 			width = current.attr('width'),
 			fps = current.attr('fps'),
+			action = current.attr('action'),
 			quality = current.attr('quality');
 
 
@@ -61,9 +62,9 @@ jQuery(document).ready(function ($) {
             flip_horiz: true
 		});
 		Webcam.attach('#my_camera_' + id);
-		/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
+		if (action && action === 'edit' ) {
 			$('#my_camera_' + id).hide();
-		}*/
+		}
 		$('#buddyform_webcam_button_' + id).click(function (e) {
 
 			/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {

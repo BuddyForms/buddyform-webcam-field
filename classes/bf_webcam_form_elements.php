@@ -107,11 +107,32 @@ class bf_webcam_form_elements {
             $quality =$customfield['quality'];
             $this->add_scripts();
             $url = admin_url('admin-ajax.php');
+            $action= isset($_GET['action']) ? $_GET['action'] : "" ;
+            $entry = isset($_GET['entry']) ? $_GET['entry'] : "" ;
+            $page = isset($_GET['page']) ? $_GET['page'] : "" ;
+
+            //If Entry is empty we check if we are in a edit entry page
+            if(empty($entry)){
+                $entry = isset($_GET['post']) ? $_GET['post'] : "";
+            }
+
+            $column_val ="";
+            $imageFullUrl="";
+            $showContainer = 'style = "display:none;"';
+
+            if (! empty($entry) && $action == 'edit'){
+                $column_val =  get_post_meta( $entry, 'webcam', true );
+                $imageFullUrl = wp_get_attachment_url( $column_val );
+                $showContainer = '';
+
+            }
            // $this->add_styles();
             ob_start();
-            $box = "<div  class=\"buddyform_webcam\" field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url'>
+            $box = "<div  class=\"buddyform_webcam\" field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url' action ='$action'>
 	                   <input data-action=\"store-snapshot\" type=\"hidden\" id='field_$id' name=\"$id\" value=\"\" class=\"file-upload-input\"/>
-	
+	                    <div $showContainer id='snap_container_$id'>
+	                        <img id='snap_thumbnail_$id' height='$height' width='$width' src='$imageFullUrl'></img>
+                        </div>
 	                  <div id='my_camera_$id'>	</div>
                         <div id=\"pre_take_buttons\" style=\"margin-top: 10px; margin-bottom: 10px;\">
                             <input  id='buddyform_webcam_button_$id' name=\"\" type=\"button\" class=\"select-imagef-btn btn btn-default\" value=\"Take Snapshot\"/>
