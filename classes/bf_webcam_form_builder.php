@@ -18,13 +18,14 @@ class bf_webcam_form_builder {
         add_filter( 'buddyforms_form_element_add_field', array( $this, 'buddyforms_webcam_create_new_form_builder_form_element' ), 1, 5 );
 
         add_action( 'admin_enqueue_scripts', array( $this, 'load_js_for_builder' ),10 );
-        add_action("custom_column_default",array($this,"webcam_custom_column_default"),1,2);
+        add_filter("custom_column_default",array($this,"webcam_custom_column_default"),1,2);
+        //add_filter ("buddyforms_formbuilder_fields_options",array($this,"bf_webcam_fields_options"),10,3);
     }
 
     public function webcam_custom_column_default($item, $column_name ){
 
         global $buddyforms;
-        $column_val = get_post_meta( $item['ID'], $column_name, true );
+        $column_val = get_post_meta( $item->ID, $column_name, true );
         $result = $column_val;
         $formSlug= $_GET['form_slug'];
         $buddyFData = isset($buddyforms[$formSlug]['form_fields']) ?$buddyforms[$formSlug]['form_fields']:[] ;
@@ -38,7 +39,7 @@ class bf_webcam_form_builder {
 
             }
         }
-			echo  $result;
+			return  $result;
     }
     public function load_js_for_builder() {
 
@@ -85,8 +86,24 @@ class bf_webcam_form_builder {
         switch ( $field_type ) {
             case 'webcam':
                 unset($form_fields);
+
+                $name                           = isset( $buddyform['form_fields'][ $field_id ]['name'] ) ? stripcslashes( $buddyform['form_fields'][ $field_id ]['name'] ) : '';
+                $form_fields['general']['name'] = new Element_Textbox( '<b>' . __( 'Label', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][name]", array(
+                    'class'    => "use_as_slug",
+                    'data'     => $field_id,
+                    'value'    => $name,
+                    'required' => 1
+                ) );
+
+                $description                           = isset( $buddyform['form_fields'][ $field_id ]['description'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['description'] ) : '';
+                $form_fields['general']['description'] = new Element_Textbox( '<b>' . __( 'Description', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][description]", array( 'value' => $description ) );
+                $form_fields['advanced']['metabox_enabled'] = new Element_Checkbox( '<b>' . __( 'Add as admin post meta box to the edit screen', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][metabox_enabled]", array( 'metabox_enabled' => '<b>' . __( 'Add this field to the MetaBox', 'buddyforms' ) . '</b>' ), array(
+                    'value' => true,
+                    'id'    => "buddyforms_options[form_fields][" . $field_id . "][required]"
+                ) );
                 $form_fields['hidden']['name'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][name]", 'Webcam' );
                 $form_fields['hidden']['slug'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][slug]", 'webcam' );
+                $form_fields['hidden']['field_identifier'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][field_identifier]", $field_id );
 
                 $form_fields['hidden']['type'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][type]", $field_type );
                 $height                          = isset( $buddyform['form_fields'][ $field_id ]['height'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['height'] ) : '240';

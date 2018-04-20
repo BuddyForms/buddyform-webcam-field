@@ -21,23 +21,15 @@ jQuery(document).ready(function ($) {
                 fps = current.attr('fps'),
                 quality = current.attr('quality');
 
-                $('#buddyform_webcam_button_' + id).click();
-                var field_value = $('#field_' + id).val();
+                //$('#buddyform_webcam_button_' + id).click();
+                //$('#buddyform_webcam_button_' + id).click();
+               // var field_value = $('#field_' + id).val();
 
-               /* jQuery.ajax({
-                    type: 'POST', url: url,
-                    data: {action: 'save_webcam_snapshot', field_id: id, field_value: field_value, nonce: frm_js.nonce},
-                    success: function (newRow) {
-                    	var tt=0;
-                    	var tttt=0;
-                    	var ttt=000000;
 
-					}
-				})*/
 
 
 		})
-		return false;
+
     });
 
 	$('.buddyform_webcam').each(function () {
@@ -67,10 +59,10 @@ jQuery(document).ready(function ($) {
 		}
 		$('#buddyform_webcam_button_' + id).click(function (e) {
 
-			/*if (gfirem_webcam.action && (gfirem_webcam.action === 'edit' || gfirem_webcam.action === 'update')) {
+			if (action && action === 'edit' || action === 'update') {
 				$('#snap_container_'+id).hide();
 				$('#my_camera_' + id).show();
-			}*/
+			}
 
 
 			Webcam.snap(function (data_uri) {

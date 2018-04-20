@@ -38,8 +38,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 if ( ! class_exists( 'bf_webcam' ) ) {
 
-    //require_once dirname( __FILE__ ) . '/includes/bf_woo_elem_fs.php';
-    //new bf_woo_elem_fs();
+    require_once dirname( __FILE__ ) . '/classes/bf_webcam_fs.php';
+    new bf_webcam_fs();
 
     class bf_webcam {
 

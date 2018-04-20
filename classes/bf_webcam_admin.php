@@ -13,8 +13,61 @@ class BuddyFormWebcamAdmin {
         add_action( "wp_ajax_nopriv_save_webcam_snapshot", array( $this, "save_webcam_snapshot" ) );
         add_action( "wp_ajax_save_webcam_snapshot", array( $this, "save_webcam_snapshot" ) );
         add_action( 'buddyforms_after_save_post', array( $this, 'buddyforms_webcam_update_webcam_post_meta' ), 10, 1 );
+        add_action( 'buddyforms_update_post_meta', array( $this, 'buddyforms_webcam_update_post_meta' ), 10, 2 );
     }
 
+    public function buddyforms_webcam_update_post_meta($customfield, $post_id){
+        global $buddyforms;
+
+        $formSlug   = $_POST['_bf_form_slug'];
+        $exploded_data = '';
+        $id ='';
+        $buddyFData = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
+        foreach ( $buddyFData as $key => $value ) {
+            $field = $value['slug'];
+            $type  = $value['type'];
+            $post             = get_post( $post_id );
+            if ( $field == bf_webcam_manager::get_slug() && $type == 'webcam' ) {
+                $key_value = $_POST["1"];
+                $exploded_data_prev = explode( ",", $key_value );
+                if (isset($exploded_data_prev[1])){
+                    $exploded_data = $exploded_data_prev[1];
+                }
+                $id = $key;
+                break;
+            }
+
+        }
+        if(!empty($exploded_data)){
+            $slug = bf_webcam_manager::get_slug();
+
+            $decoded_image = base64_decode( $exploded_data );
+            $upload_dir    = wp_upload_dir();
+            $file_id       = $slug . '_' . $id  . '_' . time();
+            $file_name     = $file_id . ".png";
+            $full_path     = wp_normalize_path( $upload_dir['path'] . DIRECTORY_SEPARATOR . $file_name );
+            $upload_file   = wp_upload_bits( $file_name, null, $decoded_image );
+            if ( ! $upload_file['error'] ) {
+                $wp_filetype = wp_check_filetype($file_name, null);
+                $attachment = array(
+                    'post_mime_type' => $wp_filetype['type'],
+                    'post_title' => preg_replace('/\.[^.]+$/', '', $file_name),
+                    'post_content' => '',
+                    'post_status' => 'inherit'
+                );
+                $attachment_id = wp_insert_attachment($attachment, $upload_file['file']);
+                if (!is_wp_error($attachment_id)) {
+                    require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+                    $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+                    wp_update_attachment_metadata($attachment_id, $attachment_data);
+                    update_post_meta( $post_id, 'webcam', $attachment_id );
+
+
+                }
+            }
+        }
+
+    }
     public function buddyforms_webcam_update_webcam_post_meta($post_id){
 
         global $buddyforms;
@@ -26,7 +79,7 @@ class BuddyFormWebcamAdmin {
             $field = $value['slug'];
             $type  = $value['type'];
             $post             = get_post( $post_id );
-            if ( $field == $formSlug && $type == 'webcam' ) {
+            if ( $field == bf_webcam_manager::get_slug() && $type == 'webcam' ) {
                 $key_value = $_POST[$key];
                 $exploded_data_prev = explode( ",", $key_value );
                 if (isset($exploded_data_prev[1])){

@@ -100,6 +100,9 @@ class bf_webcam_form_elements {
         }
         if (  is_user_logged_in() && $customfield['type']=='webcam' ) {
 
+            $fieldSlug = $customfield['slug'];
+            $name = $customfield['name'];
+            $description = $customfield['description'];
             $id = $form_args['field_id'];
             $height =  $customfield['height'];
             $width = $customfield['width'];
@@ -119,16 +122,28 @@ class bf_webcam_form_elements {
             $column_val ="";
             $imageFullUrl="";
             $showContainer = 'style = "display:none;"';
+            $showEditAlign = "";
+            $showEditInputAlign ="buddyform_webcam";
+            $showEditDiv ="";
+            $fieldLabel ="";
 
             if (! empty($entry) && $action == 'edit'){
                 $column_val =  get_post_meta( $entry, 'webcam', true );
                 $imageFullUrl = wp_get_attachment_url( $column_val );
                 $showContainer = '';
+                $showEditAlign = 'class="bf-label"';
+                $showEditInputAlign = 'buddyform_webcam bf-input';
+                $classNameDiv = "bf_field_group elem-".$fieldSlug;
+                $showEditDiv ='class="'.$classNameDiv.'"';
+                $name = $fieldSlug;
+                $fieldLabel =  $customfield['name'];
 
             }
            // $this->add_styles();
             ob_start();
-            $box = "<div  class=\"buddyform_webcam\" field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url' action ='$action'>
+            $box = "<label>$fieldLabel</label>
+                      <div $showEditDiv><div $showEditAlign ><label>$name</label></div>
+                       <div  class= '$showEditInputAlign' field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url' action ='$action'>
 	                   <input data-action=\"store-snapshot\" type=\"hidden\" id='field_$id' name=\"$id\" value=\"\" class=\"file-upload-input\"/>
 	                    <div $showContainer id='snap_container_$id'>
 	                        <img id='snap_thumbnail_$id' height='$height' width='$width' src='$imageFullUrl'></img>
@@ -141,6 +156,8 @@ class bf_webcam_form_elements {
                             <input  id='buddyform_webcam_take_another_$id' name=\"\" type=\"button\" class=\"select-image-btn btn btn-default\" value=\"Take Another\"/>
                     
                         </div>
+                        <span class=\"help-inline\">$description</span><br/>
+                    </div>
                     </div>
                     ";
             echo $box;
