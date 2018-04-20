@@ -100,9 +100,9 @@ class bf_webcam_form_elements {
         }
         if (  is_user_logged_in() && $customfield['type']=='webcam' ) {
 
-            $fieldSlug = $customfield['slug'];
-            $name = $customfield['name'];
-            $description = $customfield['description'];
+            $fieldSlug   = $customfield['slug'];
+            $name        =  isset($customfield['name']) ? stripcslashes($customfield['name']) : "";
+            $description = isset($customfield['description']) ? stripcslashes( $customfield['description']) : ""; ;
             $id = $form_args['field_id'];
             $height =  $customfield['height'];
             $width = $customfield['width'];
