@@ -9,11 +9,10 @@
  */
 jQuery(document).ready(function ($) {
 
-    var allowSubmit = true;
-    $( "#webcam" ).click(function( event ) {
-    	event.preventDefault();
-        if (allowSubmit){
-            allowSubmit = false;
+
+    $( "form" ).click(function( event ) {
+
+
         $('.buddyform_webcam').each(function () {
 
             var current = $(this),
@@ -31,25 +30,8 @@ jQuery(document).ready(function ($) {
                     Webcam.freeze();
 
                 });
-
             }
-            $("#webcam").submit();
         });
-
-
-
-        }
-        else{
-
-
-            return false;
-        }
-
-
-
-
-
-
     });
 
 	$('.buddyform_webcam').each(function () {
