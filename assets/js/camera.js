@@ -9,26 +9,46 @@
  */
 jQuery(document).ready(function ($) {
 
-
-    $( "form" ).submit(function( event ) {
+    var allowSubmit = true;
+    $( "#webcam" ).click(function( event ) {
+    	event.preventDefault();
+        if (allowSubmit){
+            allowSubmit = false;
         $('.buddyform_webcam').each(function () {
 
             var current = $(this),
-				url = current.attr('url'),
+
                 id = current.attr('id'),
-                height = current.attr('height'),
-                width = current.attr('width'),
-                fps = current.attr('fps'),
-                quality = current.attr('quality');
+                savephoto = current.attr('savephoto');
 
-                //$('#buddyform_webcam_button_' + id).click();
-                //$('#buddyform_webcam_button_' + id).click();
-               // var field_value = $('#field_' + id).val();
+            var submit_photo =  savephoto == "true" ? true : false;
+            if(submit_photo){
+
+                Webcam.snap(function (data_uri) {
+
+                    // display results in page
+                    $('#field_' + id).val(data_uri);
+                    Webcam.freeze();
+
+                });
+
+            }
+            $("#webcam").submit();
+        });
+
+
+
+        }
+        else{
+
+
+            return false;
+        }
 
 
 
 
-		})
+
 
     });
 

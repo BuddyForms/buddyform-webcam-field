@@ -124,6 +124,24 @@ class bf_webcam_form_builder {
                 $form_fields['general']['webcam_quality'] =  new Element_Number( '<b>' . __( "This is the desired quality, from 0 (worst) to 100 (best), by default '90'. ", 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][quality]", array( 'class'=>'gfirem_webcam_admin', 'value' =>  $quality , 'id'    => 'quality_' . $field_id
                 ) );
 
+                $take_photo_form_submit =  array(
+                    'true'   => 'True',
+                    'false'  => 'False',
+                );
+                $photo_form_submit_default = 'false';
+                if ( isset( $buddyform['form_fields'][ $field_id ]['webcam_photo_submit'] ) ) {
+                    $photo_form_submit_default = $buddyform['form_fields'][ $field_id ]['webcam_photo_submit'];
+                }
+                $form_fields['general']['webcam_photo_submit'] = new Element_Select( '<b>' . __( 'Take photo when the form is submited: ', 'buddyforms' ) . '</b>', 'buddyforms_options[form_fields][' . $field_id . '][webcam_photo_submit]',
+                    $take_photo_form_submit,
+                    array(
+                        'id'       => 'product-type',
+
+                        'value'    => $photo_form_submit_default,
+                        'selected' => isset( $product_type_default ) ? $product_type_default : 'false',
+                    )
+                );
+
 
 
         }

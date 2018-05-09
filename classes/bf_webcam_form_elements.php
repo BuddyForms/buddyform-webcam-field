@@ -108,6 +108,7 @@ class bf_webcam_form_elements {
             $width = $customfield['width'];
             $fps = $customfield['fps'];
             $quality =$customfield['quality'];
+            $save_on_submit = $customfield['webcam_photo_submit'];
             $this->add_scripts();
             $url = admin_url('admin-ajax.php');
             $action= isset($_GET['action']) ? $_GET['action'] : "" ;
@@ -143,7 +144,7 @@ class bf_webcam_form_elements {
             ob_start();
             $box = "<label>$fieldLabel</label>
                       <div $showEditDiv><div $showEditAlign ><label>$name</label></div>
-                       <div  class= '$showEditInputAlign' field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url' action ='$action'>
+                       <div  class= '$showEditInputAlign' field_id=\"$id\" id=\"$id\" height ='$height' width = '$width' fps ='$fps' quality ='$quality' url='$url' action ='$action' savephoto='$save_on_submit'>
 	                   <input data-action=\"store-snapshot\" type=\"hidden\" id='field_$id' name=\"$id\" value=\"\" class=\"file-upload-input\"/>
 	                    <div $showContainer id='snap_container_$id'>
 	                        <img id='snap_thumbnail_$id' height='$height' width='$width' src='$imageFullUrl'></img>
