@@ -22,13 +22,16 @@ class BuddyFormWebcamAdmin {
         $formSlug   = $_POST['_bf_form_slug'];
         $exploded_data = '';
         $id ='';
+        $path = '';
         $buddyFData = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
         foreach ( $buddyFData as $key => $value ) {
             $field = $value['slug'];
             $type  = $value['type'];
             $post             = get_post( $post_id );
             if ( $field == bf_webcam_manager::get_slug() && $type == 'webcam' ) {
-                $key_value = $_POST["1"];
+
+                $key_value = $_POST[$key];
+                $path = $value['path'];
                 $exploded_data_prev = explode( ",", $key_value );
                 if (isset($exploded_data_prev[1])){
                     $exploded_data = $exploded_data_prev[1];
@@ -40,14 +43,28 @@ class BuddyFormWebcamAdmin {
         }
         if(!empty($exploded_data)){
             $slug = bf_webcam_manager::get_slug();
-
             $decoded_image = base64_decode( $exploded_data );
-            $upload_dir    = wp_upload_dir();
+            $absolute_path=wp_upload_dir()['basedir'].$path;
+            $upload_dir    =  $absolute_path;
             $file_id       = $slug . '_' . $id  . '_' . time();
             $file_name     = $file_id . ".png";
-            $full_path     = wp_normalize_path( $upload_dir['path'] . DIRECTORY_SEPARATOR . $file_name );
+            $full_path     = wp_normalize_path( $upload_dir . DIRECTORY_SEPARATOR . $file_name );
             $upload_file   = wp_upload_bits( $file_name, null, $decoded_image );
             if ( ! $upload_file['error'] ) {
+
+
+                if ( ! file_exists( $absolute_path ) )  {
+
+
+                    mkdir($absolute_path , 0777, true);
+                    rename($upload_file['file'],$absolute_path.'/'.$file_name);
+                }
+                else{
+
+                    $default_path = wp_upload_dir()['path'];
+                    if( $absolute_path !== $default_path )
+                        rename($upload_file['file'],$absolute_path.'/'.$file_name);
+                }
                 $wp_filetype = wp_check_filetype($file_name, null);
                 $attachment = array(
                     'post_mime_type' => $wp_filetype['type'],
@@ -55,10 +72,10 @@ class BuddyFormWebcamAdmin {
                     'post_content' => '',
                     'post_status' => 'inherit'
                 );
-                $attachment_id = wp_insert_attachment($attachment, $upload_file['file']);
+                $attachment_id = wp_insert_attachment($attachment, $absolute_path.'/'.$file_name);
                 if (!is_wp_error($attachment_id)) {
                     require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-                    $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+                    $attachment_data = wp_generate_attachment_metadata($attachment_id, $absolute_path.'/'.$file_name);
                     wp_update_attachment_metadata($attachment_id, $attachment_data);
                     update_post_meta( $post_id, 'webcam', $attachment_id );
 
@@ -74,6 +91,7 @@ class BuddyFormWebcamAdmin {
         $formSlug   = $_POST['form_slug'];
         $exploded_data = '';
         $id ='';
+        $path ='';
         $buddyFData = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
         foreach ( $buddyFData as $key => $value ) {
             $field = $value['slug'];
@@ -81,6 +99,7 @@ class BuddyFormWebcamAdmin {
             $post             = get_post( $post_id );
             if ( $field == bf_webcam_manager::get_slug() && $type == 'webcam' ) {
                 $key_value = $_POST[$key];
+                $path = $value['path'];
                 $exploded_data_prev = explode( ",", $key_value );
                 if (isset($exploded_data_prev[1])){
                     $exploded_data = $exploded_data_prev[1];
@@ -94,12 +113,29 @@ class BuddyFormWebcamAdmin {
             $slug = bf_webcam_manager::get_slug();
 
             $decoded_image = base64_decode( $exploded_data );
-            $upload_dir    = wp_upload_dir();
+
+            $absolute_path=wp_upload_dir()['basedir'].$path;
+            $upload_dir    =  $absolute_path;
             $file_id       = $slug . '_' . $id  . '_' . time();
             $file_name     = $file_id . ".png";
-            $full_path     = wp_normalize_path( $upload_dir['path'] . DIRECTORY_SEPARATOR . $file_name );
+            $full_path     = wp_normalize_path( $upload_dir . DIRECTORY_SEPARATOR . $file_name );
             $upload_file   = wp_upload_bits( $file_name, null, $decoded_image );
             if ( ! $upload_file['error'] ) {
+
+
+                if ( ! file_exists( $absolute_path ) )  {
+
+
+                    mkdir($absolute_path , 0777, true);
+                    rename($upload_file['file'],$absolute_path.'/'.$file_name);
+                }
+                else{
+
+                    $default_path = wp_upload_dir()['path'];
+                    if( $absolute_path !== $default_path )
+                    rename($upload_file['file'],$absolute_path.'/'.$file_name);
+                }
+
                 $wp_filetype = wp_check_filetype($file_name, null);
                 $attachment = array(
                     'post_mime_type' => $wp_filetype['type'],
@@ -107,10 +143,10 @@ class BuddyFormWebcamAdmin {
                     'post_content' => '',
                     'post_status' => 'inherit'
                 );
-                $attachment_id = wp_insert_attachment($attachment, $upload_file['file']);
+                $attachment_id = wp_insert_attachment($attachment, $absolute_path.'/'.$file_name);
                 if (!is_wp_error($attachment_id)) {
                     require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-                    $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+                    $attachment_data = wp_generate_attachment_metadata($attachment_id, $absolute_path.'/'.$file_name);
                     wp_update_attachment_metadata($attachment_id, $attachment_data);
                     update_post_meta( $post_id, 'webcam', $attachment_id );
 

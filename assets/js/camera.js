@@ -13,6 +13,10 @@ jQuery(document).ready(function ($) {
     $( "form" ).click(function( event ) {
 
 
+        var target = event.target.name;
+        if (target == 'submitted') {
+
+
         $('.buddyform_webcam').each(function () {
 
             var current = $(this),
@@ -20,8 +24,8 @@ jQuery(document).ready(function ($) {
                 id = current.attr('id'),
                 savephoto = current.attr('savephoto');
 
-            var submit_photo =  savephoto == "true" ? true : false;
-            if(submit_photo){
+            var submit_photo = savephoto == "true" ? true : false;
+            if (submit_photo) {
 
                 Webcam.snap(function (data_uri) {
 
@@ -32,6 +36,7 @@ jQuery(document).ready(function ($) {
                 });
             }
         });
+    }
     });
 
 	$('.buddyform_webcam').each(function () {

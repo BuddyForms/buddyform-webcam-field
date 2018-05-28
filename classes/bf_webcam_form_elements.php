@@ -138,6 +138,7 @@ class bf_webcam_form_elements {
                 $showEditDiv ='class="'.$classNameDiv.'"';
                 $name = $fieldSlug;
                 $fieldLabel =  $customfield['name'];
+                $id =  $customfield['field_identifier'];
 
             }
            // $this->add_styles();
